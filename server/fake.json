@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "João",
+    "typeUser": 6,
+    "turma": "a"
+  },
+
+  {
+    "id": 2,
+    "name": "helena",
+    "typeUser": 4
+  },
+  {
+    "id": 56,
+    "name": "Nicolas",
+    "typeUser": 6,
+    "turma": "a"
+  },
+
+  {
+    "id": 289,
+    "name": "Maria",
+    "typeUser": 4
+  },
+  {
+    "id": 56,
+    "name": "Maisa",
+    "typeUser": 6,
+    "turma": "b"
+  },
+  {
+    "id": 56,
+    "name": "Jonas",
+    "typeUser": 6,
+    "turma": "b"
+  }
+]
