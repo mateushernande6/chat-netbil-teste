@@ -7,23 +7,11 @@ import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { dataRoomState } from "../src/atoms/atomAula";
 
-// const { io } = require("socket.io-client");
 
-// const socket = io("http://localhost:8000");
-
-// socket.on("connect", () => {
-//   // console.log("id => ", socket.id);
-//   console.log("This is connected => [IO]");
-// });
 
 export default function Home() {
   const [dataRoom, setDataRoom] = useRecoilState(dataRoomState);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   socket.emit("chat", message);
-  //   setMessage("");
-  // };
 
   const router = useRouter();
 
@@ -39,13 +27,21 @@ export default function Home() {
         <Formik
           initialValues={{ roomName: "", userName: "" }}
           onSubmit={(values, { setSubmitting }) => {
-            setDataRoom([
-              ...dataRoom,
-              {
+
+            const data = {
                 room: values.roomName,
                 username: values.userName,
-              },
+                
+              }
+            
+
+            setDataRoom([
+              ...dataRoom,
+              data
+              ,
             ]);
+
+
             router.push("/aulas");
           }}
         >
