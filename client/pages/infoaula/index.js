@@ -1,39 +1,63 @@
 import { Container, Text, Box, Button } from "@chakra-ui/react";
 import { Formik, Form, Field } from "formik";
-import {useRecoilValue} from 'recoil'
+import {useRecoilValue, useRecoilState} from 'recoil'
 import {dataInfoRoomState} from '../../src/atoms/atomInfoAula'
-import {useEffect} from 'react'
+import {dataMessage} from '../../src/atoms/atomMessage'
+import {useEffect, useState, useCallback, useMemo, useRef} from 'react'
 
 
-const { socket } = require("../../src/services");
 
-socket.on('message', (data) => {
-  console.log('to escutando => ',data) 
-  
-} )
+
 
 const InfoAula = () => {
-
+  
   const userData = useRecoilValue(dataInfoRoomState)
+  // const [msg, setMsg] = useState([])
 
+  const msg = []
+
+  // const setMemoMsg = useCallback((NewMsg) => {
+  //   setMsg([...msg, NewMsg])
+  // }, [msg])
+  
   console.log('user data aqui =>',userData)
 
+  const socketRef = useRef()
 
   useEffect(() => {
-    socket.on("connect", () => {
-  // console.log("id => ", socket.id);
-  console.log("This is connected => [IO] aulas");
+    const { socket } = require("../../src/services");
 
-  
-});
+    socket.on("connect", () => {  
+      console.log("This is connected => [IO] info aulas");
+    });
+
+    socket.on('message',  (data) => {
+    console.log('to escutando => ',data) 
+    // setMemoMsg(data)
+    
+  } );
+
+  socketRef.current = socket
+
   }, [])
+
+
   return (
     <Container>
       <Box>
         <Text></Text>
       </Box>
 
-      <Box>messge here</Box>
+      <Box overflow='scroll' border='1px solid red' width='500px' height='300px'>
+        {
+          // JSON.stringify(msg)
+          // msg ? msg.map((itemMsg, index) => (
+          //   <Box key={index}>
+          //     <Text>{itemMsg.text}</Text>
+          //   </Box>
+          // )) : <Text>Message here</Text>
+        }
+      </Box>
 
       <Box>
         <Formik
@@ -44,8 +68,12 @@ const InfoAula = () => {
             ...userData, message:value.message
           }
           
-          socket.emit('message', data)
+          socketRef.current.emit('message', data, 
+          (resp) => console.log('resposta do emit',resp)
+          )
           actions.resetForm()
+
+          
         }}
         >
           <Form>
@@ -57,5 +85,7 @@ const InfoAula = () => {
     </Container>
   );
 };
+
+
 
 export default InfoAula
