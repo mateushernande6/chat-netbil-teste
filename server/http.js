@@ -1,10 +1,9 @@
-const Koa = require("koa");
+const Express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 
-
-const app = new Koa();
-const httpServer = createServer(app.callback());
+const app = Express();
+const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:3000",
@@ -12,7 +11,11 @@ const io = new Server(httpServer, {
   },
 });
 
+app.get("/teste", (req, res) => {
+  res.json({ teste: "hello" });
+});
+
 module.exports = {
   httpServer,
-  io
-}
+  io,
+};
